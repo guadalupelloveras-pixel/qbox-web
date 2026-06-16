@@ -1,56 +1,52 @@
-# qBox — Sitio web (landing)
+# qBox — Sitio web completo
 
-Sitio **estático de un solo archivo**. `index.html` es completamente autónomo:
-todo (HTML, CSS, JS, fuentes, logo, video del hero e imágenes) está embebido dentro
-del propio archivo. **No requiere build, ni dependencias, ni servidor** — se abre solo.
+Sitio estático **multipágina**, listo para publicar. Cada archivo `.html` es
+**autónomo**: todo (HTML, CSS, JS, fuentes, logo, video e imágenes) está embebido
+dentro del propio archivo. **No requiere build, dependencias ni servidor.**
 
-## Contenido
-- `index.html` — la página completa (~6 MB). Listo para servir tal cual.
+## Estructura
 
-## Objetivo
-Publicarlo en **GitHub Pages** para obtener un link público y compartirlo con el cliente.
+| Archivo | Qué es | Cómo se llega |
+|---|---|---|
+| `index.html` | **Home** (hero, soluciones, quiénes somos, proyectos, confían, cotizador, showroom) | Página principal |
+| `Soluciones.html` | Explicación de cada línea — se abre **aparte** | `Soluciones.html?tipo=residencial` y `?tipo=corporativo` (desde las tarjetas "¿Qué necesita construir?") |
+| `Categoria.html` | **Landing por tipo de proyecto terminado** (una sola página que sirve los 5 tipos) | `Categoria.html?cat=modulos` · `stands` · `cocheras-galerias` · `ampliaciones` · `locales` (desde el bento "Proyectos terminados") |
+| `Admin.html` | **Panel de administración** de contenido | enlace "Administración" en el pie del home |
 
----
+Todas las páginas enlazan entre sí con rutas relativas, así que **funcionan
+tanto en GitHub Pages / Vercel como abiertas localmente**.
 
-## Instrucciones para Claude Code
+## Integraciones (ya funcionando)
+- **WhatsApp** → botón flotante + CTAs, número `+54 9 264 443-1309` (`wa.me`).
+- **Calendly / Agendar visita** → modal de reserva de turno en el showroom (botones "Agendar Cita en Showroom").
+- **Google Maps** → dirección del showroom en el pie del home.
+- **Admin** → login con correo `comercial@qboxmodular.com.ar` + clave. Edita textos,
+  tarifas del cotizador y marcas; los cambios se guardan en el navegador (localStorage)
+  de quien administra.
 
-> El usuario quiere subir este sitio a GitHub y tener un enlace público para compartir.
-> El sitio ya está terminado: **no hay que compilar ni modificar nada**, solo publicarlo.
+## Publicar
 
-### Opción A — GitHub Pages (recomendada, gratis)
-
-1. Crear un repositorio nuevo (público) en la cuenta del usuario, p. ej. `qbox-web`.
-2. Subir el contenido de esta carpeta a la raíz del repo (debe quedar `index.html` en la raíz):
+### GitHub Pages
+1. Subir **todos** los archivos de esta carpeta a la raíz del repo (que `index.html` quede en la raíz):
    ```bash
-   git init
    git add .
-   git commit -m "qBox landing — sitio estático autónomo"
-   git branch -M main
-   git remote add origin https://github.com/<usuario>/qbox-web.git
-   git push -u origin main
+   git commit -m "qBox — sitio completo (home, soluciones, proyectos, admin)"
+   git push origin main
    ```
-3. Activar GitHub Pages:
-   - Repo → **Settings** → **Pages**
-   - **Source**: `Deploy from a branch`
-   - **Branch**: `main` / carpeta `/ (root)` → **Save**
-   - (Alternativa por CLI: `gh repo create`, luego habilitar Pages con la API/CLI.)
-4. En 1–2 minutos el sitio queda disponible en:
-   ```
-   https://<usuario>.github.io/qbox-web/
-   ```
-   Ese es el link para compartir con el cliente.
+2. Settings → Pages → Source: `main` / `/ (root)` → Save.
+3. Queda en `https://<usuario>.github.io/<repo>/`.
 
-### Opción B — Dominio propio
-Si el usuario tiene el dominio `qboxmodular.com.ar`, se puede apuntar a GitHub Pages
-agregando un archivo `CNAME` con el dominio y configurando los registros DNS
-(A records de GitHub Pages o un CNAME hacia `<usuario>.github.io`).
+### Vercel
+- Conectar el repo o arrastrar la carpeta. Framework preset: **Other / Static**.
+  No hay build command. Output directory: la raíz (donde está `index.html`).
 
----
+> ⚠️ **Importante:** subí la carpeta **completa**. Si solo subís `index.html`, las
+> tarjetas de proyectos y de soluciones darán **404** (faltarían `Categoria.html`,
+> `Soluciones.html` y `Admin.html`).
 
-## Notas importantes
-- El archivo pesa ~6 MB porque trae el video y las imágenes embebidas; es normal y carga bien.
-- Esta es **una sola página** (la home). El panel de administración y las páginas de
-  categorías son archivos aparte del proyecto y **no** forman parte de este paquete.
-- Los botones de **WhatsApp** (+54 9 264 443-1309) y de **agendar visita** funcionan en el sitio publicado.
-- No editar `index.html` a mano: fue generado por un empaquetador. Para cambios de diseño,
-  se regenera desde el proyecto original y se reemplaza el archivo.
+## Notas
+- `index.html` pesa ~6 MB (incluye el video del hero embebido); las demás páginas son livianas.
+- No editar los `.html` a mano: están generados por un empaquetador. Para cambios de
+  diseño se regeneran desde el proyecto original y se reemplazan.
+- La galería de cada proyecto usa imágenes de referencia; se pueden cambiar por fotos
+  reales de obra cuando estén disponibles.
